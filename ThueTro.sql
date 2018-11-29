@@ -177,24 +177,53 @@ SELECT * FROM NHATRO
 
 SELECT * FROM HOPDONG
 
---
+--Truy xuất thông tin 2 bảng phòng trọ và nhà trọ không có điều kiện
+
 SELECT * FROM PHONGTRO,NHATRO
 
---
+--Truy xuất thông tin 2 bảng phòng trọ và nhà trọ có điều kiện
+
 SELECT * FROM PHONGTRO JOIN NHATRO ON PHONGTRO.DIACHI=NHATRO.DIACHI
 
---Truy xuất thông tin phòng trọ có Địa chỉ là 432 Trường Chinh
+-- 1.Truy xuất thông tin phòng trọ có Địa chỉ là 432 Trường Chinh
+
 SELECT * FROM PHONGTRO
 WHERE DIACHI=N'432 Trường Chinh'
 
---Truy xuất thông tin chủ trọ của địa chỉ 123 Phạm Tứ
+-- 2.Truy xuất thông tin chủ trọ của địa chỉ 123 Phạm Tứ
+
 SELECT CHUTRO FROM NHATRO
 WHERE DIACHI=N'123 Phạm Tứ'
 
---Xem Phòng trọ nào chưa đc thuê
+-- 3.Cho biết ngày thuê của phòng trọ có số phòng 101
+
+ SELECT NGAYTHUE FROM HOPDONG 
+ WHERE SOPHONG='101'
+
+-- 4.Xem Phòng trọ nào chưa đc thuê và giá phòng dưới 1000
+
 SELECT * FROM PHONGTRO
 WHERE TRANGTHAI=N'Chưa Thuê' AND GIAPHONG<1000 
 
---
-SELECT * FROM NHATRO LEFT OUTER JOIN HOADON 
-ON NHATRO.DIACHI=HOADON.DIENTICH
+-- 5.Kiểm tra phòng có giá thấp nhất trọ của Phạm Thị Chi
+
+SELECT TOP 1.* FROM PHONGTRO JOIN NHATRO ON PHONGTRO.DIACHI=NHATRO.DIACHI
+WHERE CHUTRO = N'Phạm Thị Chi'
+ ORDER BY GIAPHONG ASC 
+
+-- 6.Kiểm tra số phòng chưa đc thuê của chủ trọ Phạm Thị Chi
+
+ SELECT	TRANGTHAI,COUNT(*) AS SOPHONG FROM PHONGTRO JOIN NHATRO ON PHONGTRO.DIACHI=NHATRO.DIACHI
+ WHERE CHUTRO=N'Phạm Thị Chi'
+ GROUP BY TRANGTHAI
+
+-- 7.Kiểm tra nhưng tên của người thuê trọ đã  của quý 1 năm 2018
+
+ SELECT KHACHTHUE.* FROM HOPDONG JOIN KHACHTHUE ON HOPDONG.CMND=KHACHTHUE.CMND
+ WHERE MONTH(NGAYTHUE)<4 AND YEAR(NGAYTHUE)=2018
+
+--8.Kiểm tra danh thu theo từng phòng trong năm 2018
+
+ SELECT HOPDONG.SOPHONG,SUM(TONG) AS DOANHTHU FROM  HOADON JOIN HOPDONG on HOADON.MAHD=HOPDONG.MAHD
+ WHERE YEAR(NGAYTHUE) =2018
+ GROUP BY HOPDONG.SOPHONG
