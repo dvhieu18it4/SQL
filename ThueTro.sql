@@ -169,6 +169,13 @@ END
 UPDATE HOADON
 SET TONG =GIAPHONG+TIENDIEN+TIENNUOC+TIENRAC
 --
+
+--Update cho bảng phòng trọ
+ UPDATE PHONGTRO
+SET TRANGTHAI=N'Đã Thuê'
+WHERE SOPHONG='02'
+--
+
 -----------------------------------------
 -- Phần Select truy xuất dữ liệu
 SELECT * FROM NHATRO
@@ -228,11 +235,7 @@ WHERE CHUTRO = N'Phạm Thị Chi'
  WHERE YEAR(NGAYTHUE) =2018
  GROUP BY HOPDONG.SOPHONG
  
-  --
- UPDATE PHONGTRO
-SET TRANGTHAI=N'Đã Thuê'
-WHERE SOPHONG='02'
---
+
  -- 9.Kiểm tra xem phòng nào đã thuê và làm hợp đồng 
 
 SELECT * FROM PHONGTRO LEFT JOIN HOPDONG
